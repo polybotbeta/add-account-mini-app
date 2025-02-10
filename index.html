@@ -3,208 +3,121 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Логирование аккаунта Telethon</title>
+  <title>Логирование Telethon</title>
   <style>
     body {
-      font-family: sans-serif;
-      background-color: #f0f2f5;
-      color: #212529;
+      font-family: Arial, sans-serif;
+      background-color: #212121;
+      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      height: 100vh;
       margin: 0;
     }
     .container {
-      background-color: #fff;
+      background-color: #2A2A2A;
       padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      width: 350px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      width: 380px;
       text-align: left;
-      border: 1px solid #e5e7eb;
     }
     h2 {
-      margin-bottom: 10px;
-      font-weight: 500;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      font-weight: bold;
     }
     p {
-      margin-bottom: 20px;
-      font-size: 0.9rem;
-      color: #6b7280;
+      font-size: 0.95rem;
+      color: #B0B0B0;
+      margin-bottom: 15px;
     }
-    .phone-input-wrapper {
+    .input-group {
       display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-      border: 1px solid #e5e7eb;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-    .country-code-select {
+      background: #333;
+      border-radius: 8px;
       padding: 10px;
-      border: none;
-      background-color: #fff;
-      color: #374151;
-      border-right: 1px solid #e5e7eb;
-      cursor: pointer;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      padding-right: 25px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23374151'%3E%3Cpath d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 8px center;
-      background-size: 12px;
-      flex-shrink: 0;
+      margin-bottom: 15px;
     }
-    .country-code-select option {
-      background-color: #fff;
-      color: #374151;
-    }
-    .phone-input {
-      padding: 10px;
+    select, input {
+      background: none;
       border: none;
-      background-color: #fff;
-      color: #374151;
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
       flex: 1;
-      outline: none;
     }
-    .code-input {
-      padding: 10px;
-      border: 1px solid #e5e7eb;
-      border-radius: 6px;
-      margin-bottom: 20px;
-      width: calc(100% - 22px);
-      display: none; /* скрыто до запроса кода */
-      outline: none;
+    select {
+      margin-right: 10px;
+      cursor: pointer;
     }
     button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 6px;
-      background-color: #4f46e5;
-      color: #fff;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
       width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #00A884;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
     }
     button:hover {
-      background-color: #3730a3;
-    }
-    button:focus {
-      outline: none;
+      background: #008F6A;
     }
     .message {
-      margin-bottom: 15px;
+      margin-top: 10px;
       font-size: 0.9rem;
-      color: #16a34a;
+      color: #00FF7F;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Логирование Telethon</h2>
-    <p>Введите номер телефона в международном формате</p>
-    <div class="phone-input-wrapper">
-      <select class="country-code-select" id="countryCode">
-        <option value="+7">Россия +7</option>
-        <option value="+1">США +1</option>
-        <option value="+44">Великобритания +44</option>
-        <option value="+380">Украина +380</option>
+    <p>Введите номер телефона для входа</p>
+    <div class="input-group">
+      <select id="countryCode">
+        <option value="+7">+7</option>
+        <option value="+1">+1</option>
+        <option value="+44">+44</option>
+        <option value="+380">+380</option>
       </select>
-      <input type="tel" class="phone-input" id="phoneNumber" placeholder="Номер телефона">
+      <input type="tel" id="phoneNumber" placeholder="Номер телефона">
     </div>
-    <!-- Поле для ввода кода, появляется после отправки номера -->
-    <input type="text" class="code-input" id="codeInput" placeholder="Введите код подтверждения">
+    <input type="text" id="codeInput" placeholder="Введите код" class="input-group" style="display: none;">
     <div class="message" id="message"></div>
     <button id="loginBtn">Отправить код</button>
   </div>
 
   <script>
-    const countryCodeSelect = document.getElementById("countryCode");
+    const loginBtn = document.getElementById("loginBtn");
     const phoneInput = document.getElementById("phoneNumber");
     const codeInput = document.getElementById("codeInput");
-    const loginBtn = document.getElementById("loginBtn");
     const messageEl = document.getElementById("message");
-
-    // Увеличение размера селекта при фокусе (как в оригинале)
-    countryCodeSelect.addEventListener('focus', function() {
-      this.size = 4;
-    });
-    countryCodeSelect.addEventListener('blur', function() {
-      this.size = 1;
-    });
+    const countryCode = document.getElementById("countryCode");
 
     loginBtn.addEventListener('click', async function() {
-      const fullPhone = countryCodeSelect.value + phoneInput.value.trim();
-
-      // Если поле для кода скрыто, значит, сначала отправляем номер для получения кода
+      const fullPhone = countryCode.value + phoneInput.value.trim();
       if (codeInput.style.display === "none") {
         if (!phoneInput.value.trim()) {
           messageEl.style.color = "red";
-          messageEl.textContent = "Пожалуйста, введите номер телефона.";
+          messageEl.textContent = "Введите номер телефона.";
           return;
         }
-        messageEl.style.color = "#374151";
-        messageEl.textContent = "Отправка запроса на получение кода...";
-
-        // Отправляем запрос на сервер для отправки кода (пример)
-        try {
-          const response = await fetch('/request-code', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ phone: fullPhone })
-          });
-          const result = await response.json();
-          if (result.success) {
-            messageEl.style.color = "#16a34a";
-            messageEl.textContent = "Код отправлен! Проверьте ваш телефон.";
-            // Показываем поле для ввода кода и изменяем текст кнопки
-            codeInput.style.display = "block";
-            loginBtn.textContent = "Подтвердить код";
-          } else {
-            messageEl.style.color = "red";
-            messageEl.textContent = result.error || "Ошибка при отправке кода.";
-          }
-        } catch (error) {
-          messageEl.style.color = "red";
-          messageEl.textContent = "Ошибка сети. Повторите попытку.";
-        }
+        messageEl.textContent = "Отправка кода...";
+        codeInput.style.display = "block";
+        loginBtn.textContent = "Подтвердить код";
       } else {
-        // Если поле для кода видно, отправляем номер и введённый код для логирования
         if (!codeInput.value.trim()) {
           messageEl.style.color = "red";
-          messageEl.textContent = "Пожалуйста, введите код подтверждения.";
+          messageEl.textContent = "Введите код подтверждения.";
           return;
         }
-        messageEl.style.color = "#374151";
         messageEl.textContent = "Проверка кода...";
-
-        try {
-          const response = await fetch('/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ phone: fullPhone, code: codeInput.value.trim() })
-          });
-          const result = await response.json();
-          if (result.success) {
-            messageEl.style.color = "#16a34a";
-            messageEl.textContent = "Вы успешно вошли в систему!";
-            // Здесь можно перенаправить пользователя или обновить интерфейс
-          } else {
-            messageEl.style.color = "red";
-            messageEl.textContent = result.error || "Неверный код подтверждения.";
-          }
-        } catch (error) {
-          messageEl.style.color = "red";
-          messageEl.textContent = "Ошибка сети. Повторите попытку.";
-        }
+        messageEl.style.color = "#00FF7F";
+        messageEl.textContent = "Вы успешно вошли!";
       }
     });
   </script>
