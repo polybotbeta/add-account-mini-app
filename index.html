@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #F5F5F5; /* Серо-белый фон */
+      background-color: #F5F5F5; /* Серо-белый задний фон */
       color: #000000; /* Черный текст */
       display: flex;
       justify-content: center;
@@ -16,7 +16,7 @@
       margin: 0;
     }
     .container {
-      background-color: #FFFFFF; /* Белый фон контейнера */
+      background-color: #FFFFFF; /* Белый передний фон контейнера */
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -48,9 +48,20 @@
       outline: none;
       flex: 1;
     }
+    /* Стилизация селекта для кодов стран */
     select {
       margin-right: 10px;
       cursor: pointer;
+      background: transparent;
+      /* Убираем стандартное оформление */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      /* Добавляем кастомную стрелку */
+      background-image: url("data:image/svg+xml;utf8,<svg fill='%23000' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right center;
+      padding-right: 30px;
     }
     button {
       width: 100%;
