@@ -7,8 +7,8 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #212121;
-      color: #fff;
+      background-color: #FFFFFF; /* Белый фон */
+      color: #000000; /* Черный текст */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -16,10 +16,10 @@
       margin: 0;
     }
     .container {
-      background-color: #2A2A2A;
+      background-color: #F0F0F0; /* Светло-серый фон контейнера */
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       width: 380px;
       text-align: left;
     }
@@ -30,12 +30,12 @@
     }
     p {
       font-size: 0.95rem;
-      color: #B0B0B0;
+      color: #333333; /* Темно-серый текст */
       margin-bottom: 15px;
     }
     .input-group {
       display: flex;
-      background: #333;
+      background: #E0E0E0; /* Светло-серый фон для ввода */
       border-radius: 8px;
       padding: 10px;
       margin-bottom: 15px;
@@ -43,7 +43,7 @@
     select, input {
       background: none;
       border: none;
-      color: #fff;
+      color: #000000; /* Черный текст */
       font-size: 1rem;
       outline: none;
       flex: 1;
@@ -57,19 +57,19 @@
       padding: 12px;
       border: none;
       border-radius: 8px;
-      background: #00A884;
+      background: #1E90FF; /* Голубая кнопка */
       color: white;
       font-size: 1rem;
       cursor: pointer;
       transition: background 0.3s;
     }
     button:hover {
-      background: #008F6A;
+      background: #1C86EE; /* Темно-голубой при наведении */
     }
     .message {
       margin-top: 10px;
       font-size: 0.9rem;
-      color: #00FF7F;
+      color: #32CD32; /* Лаймово-зеленый текст */
     }
   </style>
 </head>
@@ -116,7 +116,7 @@
           return;
         }
         messageEl.textContent = "Проверка кода...";
-        messageEl.style.color = "#00FF7F";
+        messageEl.style.color = "#32CD32"; /* Лаймово-зеленый текст */
         messageEl.textContent = "Вы успешно вошли!";
       }
     });
